@@ -243,7 +243,7 @@ async function loadDogPage() {
         <div class="immersive-content">
             <div class="immersive-info">
                 <h1>${dog.name}</h1>
-                <div style="display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                <div class="dog-meta-row" style="display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
                     <p class="subtitle" style="margin-bottom: 0;">${dog.sex}</p>
                     <details class="dog-details-collapse" style="margin-top: 0; flex: 1; min-width: 250px;">
                         <summary>Ver Detalles</summary>

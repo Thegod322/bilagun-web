@@ -889,6 +889,14 @@ h2 {
         margin-top: 0.5rem;
     }
     
+    .dog-meta-row {
+        margin-bottom: 0;
+    }
+    
+    .dog-details-collapse summary {
+        margin-bottom: 0.2rem;
+    }
+    
     .immersive-dog-page {
         overflow-y: hidden; /* handle scroll in immersive-content instead */
     }
@@ -913,6 +921,9 @@ h2 {
 }
 
 /* Collapsible Dog Details */
+.dog-meta-row {
+    margin-bottom: 1rem;
+}
 .dog-details-collapse {
     margin-top: 0;
 }
