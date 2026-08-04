@@ -323,6 +323,18 @@ h2 {
     letter-spacing: 0.05em;
 }
 
+@media (max-width: 768px) {
+    .dogs-grid {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        gap: 0;
+        grid-template-columns: 1fr;
+    }
+    .dog-card {
+        border-radius: 0;
+    }
+}
+
 /* Awards */
 .awards {
     margin-top: 5rem;
@@ -846,11 +858,25 @@ h2 {
     
     .immersive-info h1 {
         font-size: 3rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .immersive-info .subtitle {
+        margin-bottom: 0.5rem;
+    }
+    
+    .immersive-meta {
+        margin-bottom: 0.5rem;
+    }
+    
+    .immersive-meta li {
+        margin-bottom: 0.2rem;
+        padding-bottom: 0.2rem;
     }
     
     .immersive-gallery-nav {
-        margin-top: 2rem;
-        margin-bottom: 0;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
         width: 100%;
         overflow-x: auto;
     }
