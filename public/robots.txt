@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /dogs_database.json
+
+Sitemap: https://bilagun.com/sitemap.xml
