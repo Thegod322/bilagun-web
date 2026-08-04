@@ -810,6 +810,10 @@ h2 {
     transition: all 0.3s ease;
 }
 
+.next-dog-nav {
+    margin-top: 2rem;
+}
+
 .immersive-thumb:hover {
     opacity: 1;
     transform: translateY(-2px);
@@ -879,6 +883,10 @@ h2 {
         margin-bottom: 1rem;
         width: 100%;
         overflow-x: auto;
+    }
+    
+    .next-dog-nav {
+        margin-top: 0.5rem;
     }
     
     .immersive-dog-page {

@@ -261,7 +261,7 @@ async function loadDogPage() {
                     </details>
                 </div>
                 
-                <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                <div class="next-dog-nav" style="display: flex; justify-content: flex-end;">
                     ${nextHtml}
                 </div>
             </div>
