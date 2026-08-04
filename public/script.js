@@ -316,31 +316,72 @@ window.startImmersiveGalleryTimer = function() {
     }
 };
 
-// Contact Form & Modal
+// Contact Form
 function initContactForm() {
-    const forms = document.querySelectorAll('#contact-form');
+    const form = document.getElementById('contact-form');
+    const formMessage = document.getElementById('form-message');
+    
+    // Also handling modal just in case to close it if opened manually or existing layout needs it,
+    // although we are moving to div messages.
     const modal = document.getElementById('success-modal');
     const closeBtn = document.getElementById('close-modal');
 
-    if (forms.length === 0 || !modal) return;
-
-    forms.forEach(form => {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            modal.classList.add('active');
-            form.reset();
-        });
-    });
-
-    if (closeBtn) {
+    if (closeBtn && modal) {
         closeBtn.addEventListener('click', () => {
             modal.classList.remove('active');
         });
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
     }
 
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
+    if (!form || !formMessage) return;
+    
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.textContent = 'Enviando...';
+        submitBtn.disabled = true;
+        formMessage.style.display = 'none';
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                formMessage.textContent = '¡Mensaje enviado con éxito!';
+                formMessage.style.backgroundColor = '#d4edda';
+                formMessage.style.color = '#155724';
+                formMessage.style.display = 'block';
+                form.reset();
+                if (modal) {
+                    modal.classList.add('active'); // Keep the original modal behavior too as a bonus or instead
+                }
+            } else {
+                const errData = await response.json();
+                throw new Error(errData.error || 'Error al enviar el mensaje');
+            }
+        } catch (error) {
+            formMessage.textContent = error.message;
+            formMessage.style.backgroundColor = '#f8d7da';
+            formMessage.style.color = '#721c24';
+            formMessage.style.display = 'block';
+        } finally {
+            submitBtn.textContent = originalBtnText;
+            submitBtn.disabled = false;
         }
     });
 }

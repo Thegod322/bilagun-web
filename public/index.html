@@ -129,12 +129,13 @@
         <section class="contact-section" id="contacto">
             <div class="container">
                 <h2>Contacto</h2>
-                <form id="contact-form" class="contact-form" action="mailto:guapiko.style@gmail.com" method="POST" enctype="text/plain">
-                    <input type="text" name="name" placeholder="Tu Nombre" required>
-                    <input type="email" name="email" placeholder="Tu Email" required>
-                    <textarea name="message" placeholder="Tu Mensaje" required></textarea>
-                    <button type="submit">Enviar Mensaje</button>
+                <form id="contact-form" class="contact-form">
+                    <input type="text" id="name" name="name" placeholder="Tu Nombre" required>
+                    <input type="email" id="email" name="email" placeholder="Tu Email" required>
+                    <textarea id="message" name="message" placeholder="Tu Mensaje" required></textarea>
+                    <button type="submit" id="submit-btn">Enviar Mensaje</button>
                 </form>
+                <div id="form-message" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 4px; text-align: center; font-weight: bold;"></div>
             </div>
         </section>
     </main>
