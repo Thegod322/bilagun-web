@@ -982,3 +982,18 @@ h2 {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+@media (max-width: 768px) {
+    .dog-meta-row {
+        margin-bottom: 0 !important;
+    }
+    .dog-details-collapse summary {
+        margin-bottom: 0.2rem !important;
+    }
+    .immersive-back {
+        margin-top: 0 !important;
+    }
+    .next-dog-nav {
+        margin-top: 0 !important;
+    }
+}
