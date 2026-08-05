@@ -437,6 +437,8 @@ function initLightbox() {
     wrapper.addEventListener('wheel', (e) => {
         e.preventDefault();
         const zoomSpeed = 0.1;
+        const oldScale = currentScale;
+        
         if (e.deltaY < 0) {
             currentScale += zoomSpeed;
         } else {
@@ -444,11 +446,26 @@ function initLightbox() {
         }
         currentScale = Math.max(1, Math.min(currentScale, 5));
         
-        if (currentScale === 1) {
-            translateX = 0;
-            translateY = 0;
+        if (currentScale !== oldScale) {
+            const rect = wrapper.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const pointerX = e.clientX - centerX;
+            const pointerY = e.clientY - centerY;
+            
+            const imgX = (pointerX - translateX) / oldScale;
+            const imgY = (pointerY - translateY) / oldScale;
+            
+            translateX = pointerX - imgX * currentScale;
+            translateY = pointerY - imgY * currentScale;
+            
+            if (currentScale === 1) {
+                translateX = 0;
+                translateY = 0;
+            }
+            updateTransform();
         }
-        updateTransform();
     });
 
     let isDragging = false;
@@ -456,6 +473,7 @@ function initLightbox() {
     
     let initialDistance = null;
     let initialScale = 1;
+    let lastCenter = null;
 
     wrapper.addEventListener('mousedown', (e) => {
         if (currentScale > 1) {
@@ -484,10 +502,18 @@ function initLightbox() {
         );
     }
 
+    function getCenter(touches) {
+        return {
+            x: (touches[0].clientX + touches[1].clientX) / 2,
+            y: (touches[0].clientY + touches[1].clientY) / 2
+        };
+    }
+
     wrapper.addEventListener('touchstart', (e) => {
         if (e.touches.length === 2) {
             initialDistance = getDistance(e.touches);
             initialScale = currentScale;
+            lastCenter = getCenter(e.touches);
             isDragging = false;
         } else if (e.touches.length === 1) {
             isDragging = true;
@@ -497,11 +523,37 @@ function initLightbox() {
     });
 
     wrapper.addEventListener('touchmove', (e) => {
-        if (e.touches.length === 2 && initialDistance) {
+        if (e.touches.length === 2 && initialDistance && lastCenter) {
             e.preventDefault();
             const currentDistance = getDistance(e.touches);
-            const scaleChange = currentDistance / initialDistance;
-            currentScale = Math.max(1, Math.min(initialScale * scaleChange, 5));
+            const center = getCenter(e.touches);
+            
+            const newScale = Math.max(1, Math.min(initialScale * (currentDistance / initialDistance), 5));
+            
+            const rect = wrapper.getBoundingClientRect();
+            const containerCenterX = rect.left + rect.width / 2;
+            const containerCenterY = rect.top + rect.height / 2;
+            
+            const pointerX = center.x - containerCenterX;
+            const pointerY = center.y - containerCenterY;
+            
+            const deltaX = center.x - lastCenter.x;
+            const deltaY = center.y - lastCenter.y;
+            
+            translateX += deltaX;
+            translateY += deltaY;
+            
+            if (newScale !== currentScale) {
+                const imgX = (pointerX - translateX) / currentScale;
+                const imgY = (pointerY - translateY) / currentScale;
+                
+                translateX = pointerX - imgX * newScale;
+                translateY = pointerY - imgY * newScale;
+                currentScale = newScale;
+            }
+            
+            lastCenter = center;
+            
             if (currentScale === 1) {
                 translateX = 0;
                 translateY = 0;
