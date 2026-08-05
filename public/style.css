@@ -610,7 +610,7 @@ h2 {
     gap: 6px;
     position: absolute;
     right: 1.5rem;
-    top: 2.5rem;
+    top: 50%;
     transform: translateY(-50%);
     z-index: 1000;
 }
@@ -701,6 +701,12 @@ h2 {
     color: #FFF !important;
     transform: translateY(0) !important;
     font-weight: 400 !important;
+}
+
+@media (max-width: 768px) {
+    .dog-header .logo {
+        font-size: 1.5rem !important;
+    }
 }
 
 .immersive-container {
