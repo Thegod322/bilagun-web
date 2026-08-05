@@ -434,8 +434,16 @@ function initLightbox() {
 
     closeBtn.addEventListener('click', closeLightbox);
 
+    let wheelTimeout;
     wrapper.addEventListener('wheel', (e) => {
         e.preventDefault();
+        
+        lightboxImg.classList.add('is-interacting');
+        clearTimeout(wheelTimeout);
+        wheelTimeout = setTimeout(() => {
+            lightboxImg.classList.remove('is-interacting');
+        }, 150);
+
         const zoomSpeed = 0.1;
         const oldScale = currentScale;
         
@@ -478,6 +486,7 @@ function initLightbox() {
     wrapper.addEventListener('mousedown', (e) => {
         if (currentScale > 1) {
             isDragging = true;
+            lightboxImg.classList.add('is-interacting');
             startX = e.clientX - translateX;
             startY = e.clientY - translateY;
         }
@@ -493,6 +502,7 @@ function initLightbox() {
 
     window.addEventListener('mouseup', () => {
         isDragging = false;
+        lightboxImg.classList.remove('is-interacting');
     });
 
     function getDistance(touches) {
@@ -515,8 +525,10 @@ function initLightbox() {
             initialScale = currentScale;
             lastCenter = getCenter(e.touches);
             isDragging = false;
+            lightboxImg.classList.add('is-interacting');
         } else if (e.touches.length === 1) {
             isDragging = true;
+            lightboxImg.classList.add('is-interacting');
             startX = e.touches[0].clientX - translateX;
             startY = e.touches[0].clientY - translateY;
         }
@@ -575,7 +587,10 @@ function initLightbox() {
     }, { passive: false });
 
     wrapper.addEventListener('touchend', (e) => {
-        isDragging = false;
+        if (e.touches.length === 0) {
+            isDragging = false;
+            lightboxImg.classList.remove('is-interacting');
+        }
         initialDistance = null;
     });
 }

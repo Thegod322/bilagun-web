@@ -1052,6 +1052,10 @@ h2 {
     transition: transform 0.1s ease-out;
 }
 
+.lightbox-img.is-interacting {
+    transition: none !important;
+}
+
 .immersive-bg {
     cursor: zoom-in;
 }
