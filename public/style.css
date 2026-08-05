@@ -5,7 +5,7 @@
     --light-gray: #E0E0E0;
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Roboto', sans-serif;
-    --container-width: 85%;
+    --container-width: 90%;
 }
 
 * {
@@ -62,7 +62,7 @@ a {
     color: var(--text-color);
     transform: translateY(0);
     font-weight: 400;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0);
+    text-shadow: none;
 }
 
 @media (max-width: 768px) {
@@ -82,6 +82,7 @@ a {
 
 .site-header.scrolled .main-nav a, .static-header .main-nav a {
     color: var(--text-color);
+    text-shadow: none;
 }
 
 .site-header.scrolled .main-nav a:hover, .static-header .main-nav a:hover {
@@ -92,15 +93,13 @@ a {
     display: inline-block;
     font-family: 'Montserrat', sans-serif;
     letter-spacing: 0.3em;
-    font-weight: 800;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+    font-weight: 400;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
     text-transform: uppercase;
-    
-    /* Initial Hero State */
-    font-size: 7rem; /* Even bigger */
-    color: #F5E6D3;
-    transform: translateY(40vh);
-    transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    font-size: 2rem;
+    color: #FFFFFF;
+    transform: translateY(0);
+    transition: all 0.3s ease;
 }
 
 .back-arrow {
@@ -125,8 +124,8 @@ a {
 
 @media (max-width: 768px) {
     .logo {
-        font-size: 12vw; /* Maximize on mobile */
-        transform: translateY(35vh);
+        font-size: 1.5rem;
+        transform: translateY(0);
     }
 }
 
@@ -136,12 +135,10 @@ a {
 
 .main-nav {
     margin-top: 1rem;
-    
-    /* Initial Hero State - hidden */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: all 0.3s ease;
 }
 
 .main-nav ul {
@@ -156,6 +153,7 @@ a {
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.3);
     transition: color 0.3s ease;
 }
 
@@ -326,9 +324,9 @@ h2 {
 
 @media (max-width: 768px) {
     .dogs-grid {
-        width: 100vw;
-        margin-left: calc(-50vw + 50%);
-        gap: 0;
+        width: 100%;
+        margin-left: 0;
+        gap: 1rem;
         grid-template-columns: 1fr;
     }
     .dog-card {
@@ -362,12 +360,17 @@ h2 {
     color: #555;
 }
 
-/* Footer */
 .site-footer {
     background-color: #111;
     color: #FFF;
     padding: 4rem 0;
     text-align: center;
+}
+
+.footer-content {
+    width: var(--container-width);
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .site-footer .logo {
@@ -606,8 +609,8 @@ h2 {
     flex-direction: column;
     gap: 6px;
     position: absolute;
-    right: 2rem;
-    top: 2.4rem;
+    right: 1.5rem;
+    top: 2.5rem;
     transform: translateY(-50%);
     z-index: 1000;
 }
@@ -631,21 +634,21 @@ h2 {
 }
 
 @media (max-width: 768px) {
-    /* Show menu toggle only when scrolled */
     .menu-toggle {
         display: flex;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s;
-    }
-    
-    .site-header.scrolled .menu-toggle {
         opacity: 1;
         visibility: visible;
     }
+    .menu-toggle .bar {
+        background-color: #FFFFFF;
+        box-shadow: 0px 1px 3px rgba(0,0,0,0.5);
+    }
+    .site-header.scrolled .menu-toggle .bar, .static-header .menu-toggle .bar {
+        background-color: var(--text-color);
+        box-shadow: none;
+    }
 
-    /* Redefine main-nav for mobile */
-    .site-header.scrolled .main-nav, .static-header .main-nav {
+    .main-nav, .site-header.scrolled .main-nav, .static-header .main-nav {
         opacity: 0;
         visibility: hidden;
         position: static;
@@ -662,12 +665,11 @@ h2 {
         transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
     
-    .site-header.scrolled .main-nav ul {
+    .main-nav ul, .site-header.scrolled .main-nav ul {
         flex-direction: column;
         gap: 1.5rem;
     }
     
-    /* When active (menu-open on header) */
     .site-header.menu-open .main-nav {
         opacity: 1;
         visibility: visible;
@@ -734,6 +736,7 @@ h2 {
     height: 100%;
     background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.1) 100%);
     z-index: 2;
+    cursor: zoom-in;
 }
 
 .immersive-content {
@@ -746,11 +749,13 @@ h2 {
     justify-content: space-between;
     align-items: flex-end;
     padding-bottom: 5vh;
+    cursor: zoom-in;
 }
 
 .immersive-info {
     color: #FFF;
     max-width: 600px;
+    cursor: default;
 }
 
 .immersive-info h1 {
@@ -985,6 +990,72 @@ h2 {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Lightbox Overlay */
+.lightbox-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.lightbox-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+    transition: background 0.3s;
+}
+
+.lightbox-close:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.lightbox-content-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    touch-action: none;
+}
+
+.lightbox-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transform-origin: center center;
+    will-change: transform;
+    transition: transform 0.1s ease-out;
+}
+
+.immersive-bg {
+    cursor: zoom-in;
+}
+
 @media (max-width: 768px) {
     .dog-meta-row {
         margin-bottom: 0 !important;
@@ -997,5 +1068,12 @@ h2 {
     }
     .next-dog-nav {
         margin-top: 1.5rem !important;
+    }
+    .dogs-grid {
+        width: 100vw !important;
+        margin-left: -5vw !important;
+    }
+    .dog-card {
+        border-radius: 0 !important;
     }
 }

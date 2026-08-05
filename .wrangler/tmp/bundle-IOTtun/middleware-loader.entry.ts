@@ -3,12 +3,12 @@
 // export dynamically through wrangler, or we can potentially let users directly
 // add them as a sort of "plugin" system.
 
-import ENTRY, { __INTERNAL_WRANGLER_MIDDLEWARE__ } from "C:\\Misc\\GuapikoProjects\\Vaults\\GuapikoClaw\\GuapikoClaw\\Projects\\Rufo Ribado\\Bilagun\\.wrangler\\tmp\\bundle-JUfBfH\\middleware-insertion-facade.js";
+import ENTRY, { __INTERNAL_WRANGLER_MIDDLEWARE__ } from "C:\\Misc\\GuapikoProjects\\Vaults\\GuapikoClaw\\GuapikoClaw\\Projects\\Rufo Ribado\\bilagun-web\\.wrangler\\tmp\\bundle-IOTtun\\middleware-insertion-facade.js";
 import { __facade_invoke__, __facade_register__, Dispatcher } from "C:\\Users\\natal\\AppData\\Local\\npm-cache\\_npx\\32026684e21afda6\\node_modules\\wrangler\\templates\\middleware\\common.ts";
-import type { WorkerEntrypointConstructor } from "C:\\Misc\\GuapikoProjects\\Vaults\\GuapikoClaw\\GuapikoClaw\\Projects\\Rufo Ribado\\Bilagun\\.wrangler\\tmp\\bundle-JUfBfH\\middleware-insertion-facade.js";
+import type { WorkerEntrypointConstructor } from "C:\\Misc\\GuapikoProjects\\Vaults\\GuapikoClaw\\GuapikoClaw\\Projects\\Rufo Ribado\\bilagun-web\\.wrangler\\tmp\\bundle-IOTtun\\middleware-insertion-facade.js";
 
 // Preserve all the exports from the worker
-export * from "C:\\Misc\\GuapikoProjects\\Vaults\\GuapikoClaw\\GuapikoClaw\\Projects\\Rufo Ribado\\Bilagun\\.wrangler\\tmp\\bundle-JUfBfH\\middleware-insertion-facade.js";
+export * from "C:\\Misc\\GuapikoProjects\\Vaults\\GuapikoClaw\\GuapikoClaw\\Projects\\Rufo Ribado\\bilagun-web\\.wrangler\\tmp\\bundle-IOTtun\\middleware-insertion-facade.js";
 
 class __Facade_ScheduledController__ implements ScheduledController {
 	readonly #noRetry: ScheduledController["noRetry"];

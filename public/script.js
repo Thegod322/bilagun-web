@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initHeroSlider();
     initContactForm();
     initMobileMenu();
+    initLightbox();
     
     if (document.getElementById('dogs-grid')) {
         initDogsGrid();
@@ -121,8 +122,8 @@ async function initDogsGrid() {
             card.href = `/dog/${dog.id}`;
             card.className = 'dog-card';
             
-            // Check if dog.image exists, else placeholder
-            const imgSrc = dog.image || 'assets/default.jpg';
+            // Check if dog.image exists, else placeholder. Serve thumbnail.
+            const imgSrc = (dog.image && dog.image.replace('compressed-for-web-page', 'thumbnails')) || 'assets/default.jpg';
             
             card.innerHTML = `
                 <img src="${imgSrc}" alt="${dog.name}" class="dog-image" loading="lazy">
@@ -385,3 +386,145 @@ function initContactForm() {
         }
     });
 }
+
+// Lightbox logic
+function initLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.getElementById('lightbox-close');
+    const wrapper = document.getElementById('lightbox-wrapper');
+    if (!lightbox || !lightboxImg || !closeBtn || !wrapper) return;
+
+    let currentScale = 1;
+    let translateX = 0;
+    let translateY = 0;
+
+    function resetZoom() {
+        currentScale = 1;
+        translateX = 0;
+        translateY = 0;
+        updateTransform();
+    }
+
+    function updateTransform() {
+        lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale})`;
+    }
+
+    function openLightbox(src) {
+        lightboxImg.src = src;
+        resetZoom();
+        lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+    }
+
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('immersive-overlay') || 
+            e.target.classList.contains('immersive-bg') || 
+            e.target.classList.contains('immersive-content') ||
+            e.target.id === 'dog-details') {
+            const bg = document.getElementById('immersive-bg');
+            if (bg) {
+                openLightbox(bg.src);
+            }
+        }
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+
+    wrapper.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const zoomSpeed = 0.1;
+        if (e.deltaY < 0) {
+            currentScale += zoomSpeed;
+        } else {
+            currentScale -= zoomSpeed;
+        }
+        currentScale = Math.max(1, Math.min(currentScale, 5));
+        
+        if (currentScale === 1) {
+            translateX = 0;
+            translateY = 0;
+        }
+        updateTransform();
+    });
+
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    
+    let initialDistance = null;
+    let initialScale = 1;
+
+    wrapper.addEventListener('mousedown', (e) => {
+        if (currentScale > 1) {
+            isDragging = true;
+            startX = e.clientX - translateX;
+            startY = e.clientY - translateY;
+        }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (isDragging && currentScale > 1) {
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            updateTransform();
+        }
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    function getDistance(touches) {
+        return Math.hypot(
+            touches[0].clientX - touches[1].clientX,
+            touches[0].clientY - touches[1].clientY
+        );
+    }
+
+    wrapper.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            initialDistance = getDistance(e.touches);
+            initialScale = currentScale;
+            isDragging = false;
+        } else if (e.touches.length === 1) {
+            isDragging = true;
+            startX = e.touches[0].clientX - translateX;
+            startY = e.touches[0].clientY - translateY;
+        }
+    });
+
+    wrapper.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && initialDistance) {
+            e.preventDefault();
+            const currentDistance = getDistance(e.touches);
+            const scaleChange = currentDistance / initialDistance;
+            currentScale = Math.max(1, Math.min(initialScale * scaleChange, 5));
+            if (currentScale === 1) {
+                translateX = 0;
+                translateY = 0;
+            }
+            updateTransform();
+        } else if (e.touches.length === 1 && isDragging) {
+            if (currentScale === 1) {
+                const deltaY = e.touches[0].clientY - (startY + translateY);
+                if (deltaY > 50) {
+                    closeLightbox();
+                }
+            } else {
+                e.preventDefault();
+                translateX = e.touches[0].clientX - startX;
+                translateY = e.touches[0].clientY - startY;
+                updateTransform();
+            }
+        }
+    }, { passive: false });
+
+    wrapper.addEventListener('touchend', (e) => {
+        isDragging = false;
+        initialDistance = null;
+    });
+}
+

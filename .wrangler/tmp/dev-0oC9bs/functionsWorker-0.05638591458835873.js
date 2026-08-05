@@ -1,9 +1,125 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// ../../../.wrangler/tmp/pages-kgYquS/functionsWorker-0.41968698278766703.mjs
+// .wrangler/tmp/bundle-IOTtun/checked-fetch.js
+var urls = /* @__PURE__ */ new Set();
+function checkURL(request, init) {
+  const url = request instanceof URL ? request : new URL(
+    (typeof request === "string" ? new Request(request, init) : request).url
+  );
+  if (url.port && url.port !== "443" && url.protocol === "https:") {
+    if (!urls.has(url.toString())) {
+      urls.add(url.toString());
+      console.warn(
+        `WARNING: known issue with \`fetch()\` requests to custom HTTPS ports in published Workers:
+ - ${url.toString()} - the custom port will be ignored when the Worker is published using the \`wrangler deploy\` command.
+`
+      );
+    }
+  }
+}
+__name(checkURL, "checkURL");
+globalThis.fetch = new Proxy(globalThis.fetch, {
+  apply(target, thisArg, argArray) {
+    const [request, init] = argArray;
+    checkURL(request, init);
+    return Reflect.apply(target, thisArg, argArray);
+  }
+});
+
+// ../../../.wrangler/tmp/pages-kGqDjV/functionsWorker-0.05638591458835873.mjs
 var __defProp2 = Object.defineProperty;
 var __name2 = /* @__PURE__ */ __name((target, value) => __defProp2(target, "name", { value, configurable: true }), "__name");
+var urls2 = /* @__PURE__ */ new Set();
+function checkURL2(request, init) {
+  const url = request instanceof URL ? request : new URL(
+    (typeof request === "string" ? new Request(request, init) : request).url
+  );
+  if (url.port && url.port !== "443" && url.protocol === "https:") {
+    if (!urls2.has(url.toString())) {
+      urls2.add(url.toString());
+      console.warn(
+        `WARNING: known issue with \`fetch()\` requests to custom HTTPS ports in published Workers:
+ - ${url.toString()} - the custom port will be ignored when the Worker is published using the \`wrangler deploy\` command.
+`
+      );
+    }
+  }
+}
+__name(checkURL2, "checkURL");
+__name2(checkURL2, "checkURL");
+globalThis.fetch = new Proxy(globalThis.fetch, {
+  apply(target, thisArg, argArray) {
+    const [request, init] = argArray;
+    checkURL2(request, init);
+    return Reflect.apply(target, thisArg, argArray);
+  }
+});
+async function onRequestPost({ request, env }) {
+  try {
+    let formData;
+    const contentType = request.headers.get("content-type") || "";
+    if (contentType.includes("application/json")) {
+      formData = await request.json();
+    } else {
+      const fd = await request.formData();
+      formData = Object.fromEntries(fd);
+    }
+    const { name, email, message } = formData;
+    if (!name || !email || !message) {
+      return new Response(JSON.stringify({ error: "Faltan campos requeridos" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    const resendApiKey = env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      return new Response(JSON.stringify({ error: "Configuraci\xF3n del servidor incompleta (falta API KEY)" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    const senderEmail = env.RESEND_SENDER_EMAIL || "onboarding@resend.dev";
+    const resendResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${resendApiKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        from: senderEmail,
+        to: "guapiko.style@gmail.com",
+        subject: `Nuevo mensaje de contacto de ${name}`,
+        html: `
+                    <h2>Nuevo mensaje desde la web Bilagun</h2>
+                    <p><strong>Nombre:</strong> ${name}</p>
+                    <p><strong>Email:</strong> ${email}</p>
+                    <p><strong>Mensaje:</strong></p>
+                    <p>${message.replace(/\n/g, "<br>")}</p>
+                `
+      })
+    });
+    if (!resendResponse.ok) {
+      const errorData = await resendResponse.json();
+      console.error("Resend error:", errorData);
+      return new Response(JSON.stringify({ error: "Error al enviar el email a trav\xE9s del proveedor" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    return new Response(JSON.stringify({ success: true, message: "Mensaje enviado correctamente" }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: "Error interno del servidor" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+}
+__name(onRequestPost, "onRequestPost");
+__name2(onRequestPost, "onRequestPost");
 async function onRequest(context) {
   const url = new URL(context.request.url);
   const pathParts = url.pathname.split("/").filter(Boolean);
@@ -94,6 +210,13 @@ async function onRequest(context) {
 __name(onRequest, "onRequest");
 __name2(onRequest, "onRequest");
 var routes = [
+  {
+    routePath: "/api/contact",
+    mountPath: "/api",
+    method: "POST",
+    middlewares: [],
+    modules: [onRequestPost]
+  },
   {
     routePath: "/dog/:id*",
     mountPath: "/dog",
@@ -781,7 +904,7 @@ var jsonError2 = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx
 }, "jsonError");
 var middleware_miniflare3_json_error_default2 = jsonError2;
 
-// .wrangler/tmp/bundle-JUfBfH/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-IOTtun/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__2 = [
   middleware_ensure_req_body_drained_default2,
   middleware_miniflare3_json_error_default2
@@ -813,7 +936,7 @@ function __facade_invoke__2(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__2, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-JUfBfH/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-IOTtun/middleware-loader.entry.ts
 var __Facade_ScheduledController__2 = class ___Facade_ScheduledController__2 {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
@@ -915,4 +1038,4 @@ export {
   __INTERNAL_WRANGLER_MIDDLEWARE__2 as __INTERNAL_WRANGLER_MIDDLEWARE__,
   middleware_loader_entry_default2 as default
 };
-//# sourceMappingURL=functionsWorker-0.41968698278766703.js.map
+//# sourceMappingURL=functionsWorker-0.05638591458835873.js.map
