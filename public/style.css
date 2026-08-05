@@ -781,6 +781,7 @@ h2 {
     line-height: 1.2;
     margin-bottom: 0.5rem;
     text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    cursor: zoom-in;
 }
 
 .immersive-info .subtitle {
@@ -1030,7 +1031,7 @@ h2 {
 }
 
 .dog-details-collapse[open] summary {
-    color: var(--accent-color);
+    color: #fff;
     border-bottom-color: transparent;
     margin-bottom: 1.5rem;
 }

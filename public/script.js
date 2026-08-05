@@ -278,6 +278,19 @@ async function loadDogPage() {
     
     // Start auto-advance timer if there are multiple photos
     window.startImmersiveGalleryTimer();
+    
+    // Toggle details text
+    const detailsEl = detailsContainer.querySelector('.dog-details-collapse');
+    if (detailsEl) {
+        detailsEl.addEventListener('toggle', (e) => {
+            const summary = e.target.querySelector('summary');
+            if (e.target.open) {
+                summary.textContent = 'Ocultar';
+            } else {
+                summary.textContent = 'Ver Detalles';
+            }
+        });
+    }
 }
 
 window.scrollGallery = function(offset) {
@@ -440,6 +453,7 @@ function initLightbox() {
         if (e.target.classList.contains('immersive-overlay') || 
             e.target.classList.contains('immersive-bg') || 
             e.target.classList.contains('immersive-content') ||
+            e.target.tagName === 'H1' ||
             e.target.id === 'dog-details') {
             const bg = document.getElementById('immersive-bg');
             if (bg) {
