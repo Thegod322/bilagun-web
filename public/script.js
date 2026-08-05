@@ -426,10 +426,14 @@ function initLightbox() {
         lightboxImg.src = src;
         resetZoom();
         lightbox.classList.add('active');
+        const bg = document.getElementById('immersive-bg');
+        if (bg) bg.style.animationPlayState = 'paused';
     }
 
     function closeLightbox() {
         lightbox.classList.remove('active');
+        const bg = document.getElementById('immersive-bg');
+        if (bg) bg.style.animationPlayState = 'running';
     }
 
     document.addEventListener('click', (e) => {

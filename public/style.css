@@ -633,7 +633,7 @@ h2 {
     transform: translateY(-9px) rotate(-45deg);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-width: 950px) and (orientation: landscape) {
     .menu-toggle {
         display: flex;
         opacity: 1;
@@ -806,6 +806,7 @@ h2 {
     align-items: center;
     gap: 10px;
     margin-bottom: 2rem;
+    max-width: 100%;
 }
 
 .gallery-arrow {
@@ -855,6 +856,7 @@ h2 {
 .immersive-thumb {
     width: 80px;
     height: 80px;
+    flex-shrink: 0;
     object-fit: cover;
     border-radius: 8px;
     cursor: pointer;
