@@ -267,7 +267,7 @@ async function loadDogPage() {
                 </div>
             </div>
             
-            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+            <div class="immersive-right-panel">
                 <div class="next-dog-nav" style="margin-bottom: 0.5rem;">
                     ${nextHtml}
                 </div>

@@ -807,6 +807,7 @@ h2 {
     gap: 10px;
     margin-bottom: 2rem;
     max-width: 100%;
+    min-width: 0;
 }
 
 .gallery-arrow {
@@ -843,7 +844,9 @@ h2 {
     border-radius: 12px;
     backdrop-filter: blur(5px);
     margin-bottom: 0;
-    max-width: 370px;
+    width: max-content;
+    max-width: 350px;
+    min-width: 0;
     overflow-x: auto;
     scroll-behavior: smooth;
     scrollbar-width: none;
@@ -908,6 +911,7 @@ h2 {
         padding-top: 100px;
         height: 100%;
         overflow-y: auto;
+        overflow-x: hidden;
     }
     
     .immersive-info {
@@ -936,8 +940,6 @@ h2 {
     .immersive-gallery-nav {
         margin-top: 0.5rem;
         margin-bottom: 1rem;
-        width: 100%;
-        overflow-x: auto;
     }
     
     .next-dog-nav {
@@ -1144,5 +1146,21 @@ h2 {
     }
     .gallery-container {
         margin-bottom: 0.5rem;
+    }
+}
+
+.immersive-right-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 0;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .immersive-right-panel {
+        align-items: center;
+        width: 100%;
+        margin-top: 2rem;
     }
 }
