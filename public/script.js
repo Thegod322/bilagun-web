@@ -223,8 +223,12 @@ async function loadDogPage() {
         }).join('');
         
         galleryHtml = `
-            <div class="immersive-gallery-nav">
-                ${thumbs}
+            <div class="gallery-container">
+                <button class="gallery-arrow left" onclick="scrollGallery(-90)">❮</button>
+                <div class="immersive-gallery-nav" id="immersive-gallery-nav">
+                    ${thumbs}
+                </div>
+                <button class="gallery-arrow right" onclick="scrollGallery(90)">❯</button>
             </div>
         `;
     }
@@ -261,19 +265,27 @@ async function loadDogPage() {
                         </div>
                     </details>
                 </div>
-                
-                <div class="next-dog-nav" style="display: flex; justify-content: flex-end;">
-                    ${nextHtml}
-                </div>
             </div>
             
-            ${galleryHtml}
+            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                <div class="next-dog-nav" style="margin-bottom: 0.5rem;">
+                    ${nextHtml}
+                </div>
+                ${galleryHtml}
+            </div>
         </div>
     `;
     
     // Start auto-advance timer if there are multiple photos
     window.startImmersiveGalleryTimer();
 }
+
+window.scrollGallery = function(offset) {
+    const nav = document.getElementById('immersive-gallery-nav');
+    if (nav) {
+        nav.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+};
 
 // Global function for the slider click event
 window.changeImmersiveImage = function(src, thumbElement) {
